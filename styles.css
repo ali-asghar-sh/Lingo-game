@@ -25,7 +25,7 @@ body {
 
 .word-row {
     display: grid;
-    grid-template-columns: repeat(5, 60px);
+    grid-template-columns: repeat(4, 60px); /* Changed from 5 to 4 */
     gap: 5px;
 }
 
@@ -43,17 +43,22 @@ body {
 }
 
 .letter-cell.correct {
-    background: #6aaa64;
+    background: #6aaa64; /* Green */
     color: white;
 }
 
 .letter-cell.present {
-    background: #c9b458;
+    background: #c9b458; /* Yellow */
     color: white;
 }
 
 .letter-cell.absent {
-    background: #787c7e;
+    background: #787c7e; /* Gray */
+    color: white;
+}
+
+.letter-cell.revealed {
+    background: #6aaa64; /* First letter is always green */
     color: white;
 }
 

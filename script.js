@@ -5,28 +5,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const message = document.getElementById('message');
     const scoreDisplay = document.getElementById('score');
 
-    let secretWord = generateRandomWord().toUpperCase();
+    // 4-letter words (first letter will be revealed)
+    const words = ["LOVE", "FIRE", "BEAR", "CAKE", "DUCK", "GOLD", "HOPE"];
+    let secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
     let currentRow = 0;
     let score = 0;
 
-    // Initialize the game board
+    // Initialize the game board with first letter revealed
     function initBoard() {
         for (let i = 0; i < 6; i++) {
             const row = document.createElement('div');
             row.className = 'word-row';
-            for (let j = 0; j < 5; j++) {
+            for (let j = 0; j < 4; j++) {
                 const cell = document.createElement('div');
                 cell.className = 'letter-cell';
+                // Reveal first letter in the first row
+                if (i === 0 && j === 0) {
+                    cell.textContent = secretWord[0];
+                    cell.classList.add('revealed');
+                }
                 row.appendChild(cell);
             }
             board.appendChild(row);
         }
-    }
-
-    // Generate a random 5-letter word (for demo, use a predefined list)
-    function generateRandomWord() {
-        const words = ["APPLE", "CRANE", "GLOBE", "MONEY", "HAPPY", "LINGO"];
-        return words[Math.floor(Math.random() * words.length)];
     }
 
     // Check the guessed word
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const row = board.children[currentRow];
         let correctPositions = 0;
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 4; i++) {
             const cell = row.children[i];
             const letter = guess[i];
             cell.textContent = letter;
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (correctPositions === 5) {
+        if (correctPositions === 4) {
             message.textContent = "You win!";
             score += 10;
             scoreDisplay.textContent = score;
@@ -66,8 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listeners
     submitBtn.addEventListener('click', () => {
         const guess = wordInput.value.toUpperCase();
-        if (guess.length !== 5) {
-            message.textContent = "Please enter a 5-letter word!";
+        if (guess.length !== 4) {
+            message.textContent = "Please enter a 4-letter word!";
+            return;
+        }
+        if (guess[0] !== secretWord[0]) {
+            message.textContent = `First letter must be ${secretWord[0]}!`;
             return;
         }
         checkWord(guess);
